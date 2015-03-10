@@ -9,3 +9,6 @@ Currently, this repository is being used for deadlines April 20th and forward.
 ## Usage
 Usage is currently restricted to those enrolled in one or more of Jim Teresco's courses.  Authentication is required to access any features provided.
 
+## Features
+Current usability will be expanded with new features.  These can be viewed in the [Issue Tracking](https://github.com/cschermerhorn/Submission-Box/issues) portion of this repository. Be sure to filter to the correct milestone and label structure.
+
