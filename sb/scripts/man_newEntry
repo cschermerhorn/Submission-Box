@@ -1,0 +1,14 @@
+#!/usr/bin/perl
+
+print "\n\nNAME:\n\n";
+print "newEntry\n\n";
+
+print "SYNOPSIS:\n\n";
+print "newEntry [Student] StudentID Password\n";
+print "newEntry [Course] CourseID\n";
+print "newEntry [Enrollment] StudentID CourseID\n";
+print "newEntry [Assignment] AssignmentName CourseID DueDate gFlag(0 for non auto grading, 1 otherwise)\n";
+
+print "DESCRIPTION:\n\n";
+print "Adds a new row in table [Student|Course|Enrollment|Assignment]\n";
+print "It will also create new directories for every new course and assignment\n\n\n";

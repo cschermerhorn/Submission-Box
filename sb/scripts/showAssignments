@@ -1,0 +1,53 @@
+#!/usr/bin/perl
+
+#Perl Modules
+use DBI;
+use DBD::mysql;
+use File::Basename;
+use Digest::MD5 'md5';
+
+#Script Variables
+$prog = basename($0);
+$table;
+$qry;
+
+#Functions
+sub execQry{
+    
+   #Database Variables
+    $driver = "mysql";
+    $host = "localhost";
+    $database = "SubmissionBox";
+    $usr = "sbadmin";
+    $pwd = "sbadminpassword";
+    
+    #Establish Database Connection
+    $DBIConnect = DBI->connect("DBI:$driver:$database", $usr, $pwd) or die $DBI::errstr;
+
+    #Prepare Query
+    $Qry = $_[0];
+    $sqlQry = $DBIConnect->prepare($Qry) or die "Can't prepare $Qry: $DBIConnect->errstr\n";
+    
+    #Execute Query
+    $sqlQry->execute() or die "Can't execute the query: $sqlQry->errstr\n";
+
+    # get results into variables
+    $sqlQry->bind_columns(\$assignId, undef, \$assignName, \$courseID, undef);
+
+    # loop through results
+    while ($sqlQry->fetch()) {
+	print "$assignId, $assignName, $courseID\n";
+    }
+     
+}
+
+$table = "Assignment";
+$qry = "select * from $table";
+if($#ARGV > 1){
+    $crsID = $ARGV[1];
+    $qry .= " where CourseID='$crsID';";
+}
+else {
+    $qry .= ";";
+}
+&execQry($qry);  #Subroutine is called to execute the query

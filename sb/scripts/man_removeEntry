@@ -1,0 +1,14 @@
+#!/usr/bin/perl
+
+print "\n\nNAME:\n\n";
+print "removeEntry\n\n";
+
+print "SYNOPSIS:\n\n";
+print "removeEntry [Student] StudentID\n";
+print "removeEntry [Course] CourseID\n";
+print "removeEntry [Enrollment] StudentID CourseID\n";
+print "removeEntry [Assignment] AssignmentName CourseID\n";
+
+print "DESCRIPTION:\n\n";
+print "Removes a row in table [Student|Course|Enrollment|Assignment]\n";
+print "It will also remove corresponding values in other tables\n\n\n";

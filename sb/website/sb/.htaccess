@@ -1,0 +1,10 @@
+AuthUserFile /home/www/restrict/.htpasswd
+AuthGroupFile /dev/null
+AuthName "Private Web Test"
+AuthType Basic
+<Limit GET>
+order deny,allow
+deny from all
+allow from 66.109.62.234
+allow from 66.109.58.233
+</Limit>

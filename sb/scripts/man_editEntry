@@ -1,0 +1,15 @@
+#!/usr/bin/perl
+
+print "\n\n";
+print "NAME:\n\n";
+print "editEntry\n\n";
+
+print "SYNOPSIS:\n\n";
+print "editEntry [Student] StudentID Password\n";
+print "editEntry [Enrollment] StudentID NewCourseID OldCourseID\n";
+print "editEntry [Assignment] gFlag  AssignmentName CourseID DueDate\n\n";
+
+print "DESCRIPTION:\n\n";
+print "Changes a student's password in table [Student]\n";
+print "Moves a student from one course to another in table [Enrollment]\n";
+print "Changes the due date for an assignment in table [Assignment]\n\n\n";
