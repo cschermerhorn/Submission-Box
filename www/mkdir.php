@@ -2,7 +2,7 @@
 /*
 This script is an action value of the submission form in submit.php.
 This script builds the submission path. For example  ./sb/courses/csc501/Assignment1/John
-For this to work correctly,before runing this script the ..... script must be run to create particular course directory,csc501 for example, owned by apache with rewritable  permission 
+For this to work correctly,before runing this script the ..... script must be run to create particular course directory,csc501 for example, owned by apache with rewritable  permission
 Note:./sb/courses/ is statically created with rewritable permission
 
 */
@@ -118,7 +118,7 @@ font-size: 1.5em;
 	color: #207EBF;
 	text-transform: uppercase;
 	margin-left: 11px;
-} 
+}
 
 .errorheader p {
 	     color: #ff0000;
@@ -158,11 +158,11 @@ function error_and_die($msg) {
 }
 
 //database connection
-$con = mysql_connect("localhost","sbuser","sbpasswd") or error_and_die("Failed to connect to database");
-mysql_select_db("SubmissionBox", $con);
+$con = mysql_connect("localhost","root","letsgosb3") or error_and_die("Failed to connect to database");
+mysql_select_db("test", $con);
 
 //Name field is the assignment name. It is used for appropriate path building.
-//gFlag is selected to check if the assignment is set to be automatically executed 
+//gFlag is selected to check if the assignment is set to be automatically executed
 $sql_command = "select Name , gFlag from Assignment where AssignmentID = " . $_POST['assignmentID'] . ";";
 $res = mysql_query($sql_command);
 $row = mysql_fetch_array($res);
@@ -185,24 +185,24 @@ if (strlen($assignment) == 0) error_and_die ("Assignment not set properly!  Plea
 $max_filesize = 5000000; // Maximum filesize in BYTES (currently almost 5 MB).
 //mkdir( dirname(__FILE__) . '/sb/courses/'.$course . '/' . $assignment  , 0777); //creates assignment directory and makes it rewritable. /sb/courses/ could be changed to match your server settings
 
-$upload_path = dirname(__FILE__) . '/sb/courses/'.$course . '/' . $assignment . '/' . $student ;  
-$temp = $upload_path ; 
+$upload_path = dirname(__FILE__) . '/sb/courses/'.$course . '/' . $assignment . '/' . $student ;
+$temp = $upload_path ;
 
-while (file_exists($upload_path))//Checks if the student has submited something for the selected assignment 
-{				     //if so, we append the number of submission attempt at the end of the directory  name 
+while (file_exists($upload_path))//Checks if the student has submited something for the selected assignment
+{				     //if so, we append the number of submission attempt at the end of the directory  name
 $copy += 1 ;			     //For example, John's third submissin for Assignment1, csc501 lives in /sb/courses/csc501/Assignment1/John-3
-$upload_path = $temp . "-" . $copy; 
-} 
+$upload_path = $temp . "-" . $copy;
+}
 
 mkdir( $upload_path, 0777);
 
 
 $filename = $_FILES['userfile']['name']; // Get the name of the file (including file extension).
- 
+
 // Now check the filesize, if it is too large then ERROR_AND_DIE and inform the user.
 if(filesize($_FILES['userfile']['tmp_name']) > $max_filesize)
 error_and_die('The file you attempted to upload is too large.');
- 
+
 // Check if we can upload to the specified path, if not ERROR_AND_DIE and inform the user.
 if(!is_writable($upload_path))
 {
@@ -230,26 +230,26 @@ $CompiledFilreName = substr($filename , 0, $dotPos ); // Get the name of the fil
 //$ProgramName is the fully qualified path/name of the submitted program
 shell_exec("/usr/local/jdk1.7.0_17/bin/javac  -d $upload_path   $ProgramName");
 
-//To execute the submitted program set java path to match your server settings 
+//To execute the submitted program set java path to match your server settings
 //If the uploaded program takes an input, then the test case input will be taken from in.txt
 //in.txt lies in the same directory where makdir.php lives
-//Any generated output will be saved at outPhp.txt which lies in the same path where the uploaded .java file lives 
+//Any generated output will be saved at outPhp.txt which lies in the same path where the uploaded .java file lives
 $run =  shell_exec("/usr/local/jdk1.7.0_17/bin/java -classpath $upload_path  $CompiledFilreName < " . "in.txt" .  " >&$upload_path" ."/outPhp.txt");
 
 $isJavaFile = stripos($ProgramName , "java") ;
-if ( $isJavaFile === false )// Checks if the uploaded file is a java program 
+if ( $isJavaFile === false )// Checks if the uploaded file is a java program
 {
-    
+
 //if NOT we remove the wrong file and delete the recently created directory
     unlink($upload_path . "/" . $filename);
     unlink($upload_path . "/" . $CompiledFilreName . ".class" );
     rmdir($upload_path );
     header("location: submit.php?error= Please upload your source code file");
-    
+
 }
 
  /*$correctOutputFile=fopen(dirname(__FILE__) . '/output.txt',"r") or error_and_die("Grading failed.  Please contact your instructor");
-if ( $correctOutputFile === $runi ) 
+if ( $correctOutputFile === $runi )
     $result = "pass" ;
 else
     $result = "fail" ;
@@ -257,7 +257,7 @@ else
 */
 
 }
-$to = "terescoj@strose.edu," . $student . "@strose.edu"; // change it to the receiver email address
+$to = "schermerhornc485@strose.edu," . $student . "@strose.edu"; // change it to the receiver email address
 $subject = "SubmissionBox confirmation: " . $course . " " . $assignment . ", for " . $student;
 $body = "SubmissionBox confirmation: " . $assignment . "\" for " . $course . " has been uploaded by " . $student . ".\nThe following file was submitted: " . $filename;
 //$from = $student. "@strose.edu"; // student strose e-mail
