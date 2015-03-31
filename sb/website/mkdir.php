@@ -163,14 +163,18 @@ mysql_select_db("SubmissionBox", $con);
 
 //Name field is the assignment name. It is used for appropriate path building.
 //gFlag is selected to check if the assignment is set to be automatically executed 
-$sql_command = "select Name , gFlag from Assignment where AssignmentID = " . $_POST['assignmentID'] . ";";
+$sql_command = "select AssignmentId, Name , gFlag, FileTypes, DueDate from Assignment where AssignmentID = " . $_POST['assignmentID'] . ";";
 $res = mysql_query($sql_command);
 $row = mysql_fetch_array($res);
 
 $course = $_POST['courseName'];
 $student = $_SESSION['username'] ;
-$assignment = $row[0];
-$isGraded = $row[1];
+$assignmentId = $row[0];
+$assignment = $row[1];
+$isGraded = $row[2];
+$allowedFileTypesStr = $row[3];
+$dueDate = strtotime($row[4]);
+
 $iCopy = 0 ;
 
 // JDT added 1/11/14
@@ -178,6 +182,8 @@ if (strlen($course) == 0) error_and_die ("Course not set properly!  Please try a
 if (strlen($student) == 0) error_and_die ("Student name not set properly!  Please try again or contact your instructor.");
 if (strlen($assignment) == 0) error_and_die ("Assignment not set properly!  Please try again or contact your instructor.");
 
+if (strlen($allowedFileTypesStr) == 0) error_and_die("Allowed file types not set properly.  Please try again or contact your instructor.");
+$allowedFileTypes = explode(",", $allowedFileTypesStr);
 
 
 //Configuration - Your Options
@@ -198,6 +204,19 @@ mkdir( $upload_path, 0777);
 
 
 $filename = $_FILES['userfile']['name']; // Get the name of the file (including file extension).
+$idx = strpos($filename, ".", -1);
+$fileExt = substr($filename, $idx + 1);
+$isFileTypeAllowed = false;
+foreach($allowedFileTypes as $allowedFileType) {
+    if ($allowedFileType == $fileExt) {
+        $isFileTypeAllowed = true;
+        break;
+    }
+}
+if (!$isFileTypeAllowed) {
+    error_and_die("Your submission is not the correct file type");
+}
+
  
 // Now check the filesize, if it is too large then ERROR_AND_DIE and inform the user.
 if(filesize($_FILES['userfile']['tmp_name']) > $max_filesize)
