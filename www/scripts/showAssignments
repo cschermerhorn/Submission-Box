@@ -13,21 +13,21 @@ $qry;
 
 #Functions
 sub execQry{
-    
+
    #Database Variables
     $driver = "mysql";
     $host = "localhost";
-    $database = "SubmissionBox";
-    $usr = "sbadmin";
-    $pwd = "sbadminpassword";
-    
+    $database = "test";
+    $usr = "root";
+    $pwd = "letsgosb3";
+
     #Establish Database Connection
     $DBIConnect = DBI->connect("DBI:$driver:$database", $usr, $pwd) or die $DBI::errstr;
 
     #Prepare Query
     $Qry = $_[0];
     $sqlQry = $DBIConnect->prepare($Qry) or die "Can't prepare $Qry: $DBIConnect->errstr\n";
-    
+
     #Execute Query
     $sqlQry->execute() or die "Can't execute the query: $sqlQry->errstr\n";
 
@@ -38,7 +38,7 @@ sub execQry{
     while ($sqlQry->fetch()) {
 	print "$assignId, $assignName, $courseID\n";
     }
-     
+
 }
 
 $table = "Assignment";

@@ -230,7 +230,7 @@ echo "<h2>" .$_SESSION['username'] . " assignment submission <div style='float:r
 $studentID = $_SESSION['username'] ;
  
 //Establish the database connection
-$con = mysql_connect("localhost","sbuser","sbpasswd") or die("Failed to connect to database");
+$con = mysql_connect("localhost","test") or die("Failed to connect to database");
 mysql_select_db("SubmissionBox", $con);
 
 //Select all the courses in which the student has been enrolled
