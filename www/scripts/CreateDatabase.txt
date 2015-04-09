@@ -2,6 +2,7 @@ drop table Student;
 drop table Course;
 drop table Enrollment;
 drop table Assignment;
+drop table Submission;
 
 create table Student(
 StudentID varchar(20) not null,
@@ -26,3 +27,15 @@ CourseID varchar(20) not null,
 DueDate date not null,
 primary key (AssignmentID),
 foreign key (CourseID) references Course (CourseID));
+
+create table Submission(
+StudentID int not null,
+AssignmentID int not null,
+SubmissionDate DATETIME not null,
+Grade DECIMAL(5,2),
+Comments varchar(4000),
+PRIMARY KEY (StudentID, AssignmentID),
+FOREIGN KEY (StudentID) REFERENCES Student(StudentID),
+FOREIGN KEY (AssignmentID) REFERENCES Assignment(AssignmentID));
+
+alter table Assignment add FileTypes VARCHAR(512);
