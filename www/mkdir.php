@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL^ E_DEPRECATED);
 /*
 This script is an action value of the submission form in submit.php.
 This script builds the submission path. For example  ./sb/courses/csc501/Assignment1/John
@@ -360,7 +361,7 @@ $max_filesize = 5000000; // Maximum filesize in BYTES (currently almost 5 MB).
 
 $upload_path = dirname(__FILE__) . '/sb/courses/'.$course . '/' . $assignment . '/' . $student ;
 $temp = $upload_path ;
-
+$copy = 0;
 while (file_exists($upload_path))//Checks if the student has submited something for the selected assignment
 {				     //if so, we append the number of submission attempt at the end of the directory  name
 $copy += 1 ;			     //For example, John's third submissin for Assignment1, csc501 lives in /sb/courses/csc501/Assignment1/John-3
@@ -371,7 +372,7 @@ mkdir( $upload_path, 0777);
 
 
 $filename = $_FILES['userfile']['name']; // Get the name of the file (including file extension).
-$idx = strpos($filename, ".", -1);
+$idx = strpos($filename, ".", 0);
 $fileExt = substr($filename, $idx + 1);
 $isFileTypeAllowed = false;
 foreach($allowedFileTypes as $allowedFileType) {
@@ -444,9 +445,27 @@ else
 */
 
 }
+
+    // Create/update submission record
+    $submissionTime = time();
+    $mysqltime = date ("Y-m-d H:i:s", $submissionTime);
+    $submissionStatement = "Insert into submission (StudentId, AssignmentID, SubmissionDate) VALUES (\"$student\",$assignmentId,\"$mysqltime\") ON DUPLICATE KEY UPDATE SubmissionDate=\"$mysqltime\";";
+//    mysqli_stmt_bind_param($submissionStatement, "sis", $student, $assignment, $mysqltime);
+//    if (!mysqli_stmt_execute($submissionStatement)) {
+    if (!mysql_query($submissionStatement)) {
+        echo mysql_error();
+        error_and_die("There was a problem recording your submission. Please try again or contact your instructor");
+    }
+
+    $submissionTimeDelta = $dueDate - $submissionTime;
+    $lateMessage = "";
+    if ($submissionTimeDelta < 0) {
+        $lateMessage = "\nThe assignment was submitted " . ($submissionTimeDelta / 60.0 / 60.0) . " hours late.";
+    }
+
 $to = "schermerhornc485@strose.edu," . $student . "@strose.edu"; // change it to the receiver email address
 $subject = "SubmissionBox confirmation: " . $course . " " . $assignment . ", for " . $student;
-$body = "SubmissionBox confirmation: " . $assignment . "\" for " . $course . " has been uploaded by " . $student . ".\nThe following file was submitted: " . $filename;
+$body = "SubmissionBox confirmation: " . $assignment . "\" for " . $course . " has been uploaded by " . $student . ".\nThe following file was submitted: " . $filename . $lateMessage;
 //$from = $student. "@strose.edu"; // student strose e-mail
 $from = "sb-confirmation@teresco.org";
 $headers = "From:" . $from; // additional parameter to set From, Cc and Bcc
