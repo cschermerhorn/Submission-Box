@@ -42,25 +42,26 @@ if($prog eq "newEntry"){
     $table = $ARGV[0];
     $qry = "insert into $table";
     if($table eq "Assignment"){
-	if($#ARGV != 4){
-	    print "Invalid argument count\n";
-	    exit;
-	}
-	else{
-	    #Query is built from command line arguments
-	    $aname = $ARGV[1];
-	    $crsID = $ARGV[2];
-	    $ddate = $ARGV[3];
-	    $gflag = $ARGV[4];
-	    $qry .= " (gFlag, Name, CourseID, DueDate) values ('$gflag','$aname', '$crsID', '$ddate');";
-	    &execQry($qry);  #Subroutine is called to execute the query
-	    $dirname = "/home/www/SubmissionBox/sb/courses/$crsID/$aname";
-	    unless(mkdir $dirname, 0770){   #Creates a new directory at desired path
-		die "Unable to create $dirname\n";
-	    }
-	    print "Successfully inserted assignment: $aname\n";
-	    chmod(0770, $dirname) or die "Unable to chmod $dirname";
-	}
+    	if($#ARGV != 5){
+    	    print "Invalid argument count\n";
+    	    exit;
+    	}
+    	else{
+    	    #Query is built from command line arguments
+    	    $aname = $ARGV[1];
+    	    $crsID = $ARGV[2];
+    	    $ddate = $ARGV[3];
+    	    $gflag = $ARGV[4];
+    	    $fTypes = $ARGV[5];
+    	    $qry .= " (gFlag, Name, CourseID, DueDate, FileTypes) values ('$gflag','$aname', '$crsID', '$ddate', '$fTypes');";
+    	    &execQry($qry);  #Subroutine is called to execute the query
+    	    $dirname = "/home/www/SubmissionBox/sb/courses/$crsID/$aname";
+    	    unless(mkdir $dirname, 0770){   #Creates a new directory at desired path
+    		die "Unable to create $dirname\n";
+    	    }
+    	    print "Successfully inserted assignment: $aname\n";
+    	    chmod(0770, $dirname) or die "Unable to chmod $dirname";
+    	}
     }
     else{
 	$qry .= " values ('";

@@ -5,7 +5,7 @@
 //and to pass back a call to processData function
 //which is executed by eval function in submit.php to populate the second select element
 
-
+error_reporting(E_ALL^ E_DEPRECATED);
 $selectedCourse =  $_GET['courseID'];
 //Establish the database connection
 $con = mysql_connect("localhost","root","letsgosb3") or die("Failed to connect to database");
