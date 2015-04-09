@@ -104,6 +104,20 @@ if($prog eq "newEntry"){
 	    &execQry($qry);  #Subroutine is called to execute the query
 	    print "Successfully enrolled $usrname into $crsID\n";
 	}
+		elsif($table eq "Submission"){
+            if($#ARGV != 4){
+                print "Invalid Argument Count\n";
+                exit;
+            }
+            #Query is built from command line arguments
+            $studentId= $ARGV[1];
+            $assignmentId = $ARGV[2];
+            $grade = $ARGV[3];
+            $comment = $ARGV[4];
+            $qry = "UPDATE submission set Grade = $grade, Comments = '$comment' where StudentId = '$studentId' and AssignmentID = $assignmentId;";
+            &execQry($qry);  #Subroutine is called to execute the query
+            print "Successfully entered grade information for $studentId for assignment $assignmentId\n";
+        }
 	else{
 	    print "Table $table does not exist\n"
 	}

@@ -172,6 +172,18 @@ elsif($prog eq "removeEntry"){
 	&execQry($qry);  #Subroutine is called to execute the query
 	print "Successfully unenrrolled $usrname from $crsID\n";
     }
+     elsif($table eq "Submission"){
+            if($#ARGV != 2){
+                print "Invalid Argument Count\n";
+                exit;
+            }
+            #Query is built from command line arguments
+            $studentId= $ARGV[1];
+            $assignmentId = $ARGV[2];
+            $qry = "UPDATE submission set Grade = null, Comments = null where StudentId = '$studentId' and AssignmentID = $assignmentId;";
+            &execQry($qry);  #Subroutine is called to execute the query
+            print "Successfully removed grade information for $studentId for assignment $assignmentId\n";
+        }
     else{
 	print "Table $table does not exist\n"
     }
