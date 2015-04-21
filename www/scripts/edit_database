@@ -194,7 +194,7 @@ elsif($prog eq "editEntry"){
     $table = $ARGV[0];
     $qry = "update $table ";
     if($table eq "Assignment"){
-	if($#ARGV != 4){
+	if($#ARGV != 5){
 	    print "Invalid argument count\n";
 	    exit;
 	}
@@ -204,7 +204,9 @@ elsif($prog eq "editEntry"){
 	    $crsID = $ARGV[2];
 	    $ddate = $ARGV[3];
 	    $gflag = $ARGV[4];
-	    $qry .= " set gFlag = '$gflag', Name = '$aname', CourseID = '$crsID',  DueDate = '$ddate' where CourseID = '$crsID';";
+	     $fTypes = $ARGV[5];
+
+	    $qry .= " set gFlag = '$gflag',  CourseID = '$crsID',  DueDate = '$ddate', FileTypes='$fTypes' where CourseID = '$crsID' and Name = '$aname' ;";
 	    &execQry($qry);  #Subroutine is called to execute the query
 	    print "Successfully changed due date for $aname\n";
 	}

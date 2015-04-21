@@ -355,8 +355,8 @@ $allowedFileTypes = explode(",", $allowedFileTypesStr);
 
 
 //Configuration - Your Options
-
-$max_filesize = 5000000; // Maximum filesize in BYTES (currently almost 5 MB).
+/**
+ $max_filesize = 5000000; // Maximum filesize in BYTES (currently almost 5 MB).
 //mkdir( dirname(__FILE__) . '/sb/courses/'.$course . '/' . $assignment  , 0777); //creates assignment directory and makes it rewritable. /sb/courses/ could be changed to match your server settings
 
 $upload_path = dirname(__FILE__) . '/sb/courses/'.$course . '/' . $assignment . '/' . $student ;
@@ -370,7 +370,7 @@ $upload_path = $temp . "-" . $copy;
 
 mkdir( $upload_path, 0777);
 
-
+*/
 $filename = $_FILES['userfile']['name']; // Get the name of the file (including file extension).
 $idx = strpos($filename, ".", 0);
 $fileExt = substr($filename, $idx + 1);
@@ -390,14 +390,14 @@ if (!$isFileTypeAllowed) {
 // Now check the filesize, if it is too large then ERROR_AND_DIE and inform the user.
 if(filesize($_FILES['userfile']['tmp_name']) > $max_filesize)
 error_and_die('The file you attempted to upload is too large.');
-
+/**
 // Check if we can upload to the specified path, if not ERROR_AND_DIE and inform the user.
 if(!is_writable($upload_path))
 {
  echo $upload_path ;
  error_and_die('You cannot upload to the specified directory, please report this error to your instructor.');
 }
-
+*/
 // JDT added for common error checks 1/11/14, expanded 1/25/15
 if (strcmp($filename,"package.bluej") == 0) error_and_die("package.bluej is not a valid file for submission!  If you are attempting to submit a single Java file, please choose your .java file instead.  If you are trying to submit an entire folder for your project, please create a .zip or .7z file of your entire project folder if you have not already done so, then choose the .zip or .7z file that you created instead.");
 if (endsWith($filename,'.class')) error_and_die ("Please choose your .java file instead of your .class file!");

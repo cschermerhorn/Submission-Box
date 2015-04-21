@@ -24,7 +24,7 @@ $values = " new Array(" ;
 while($row = mysql_fetch_array($res))
 {
 $values .= "'" . $row[0] . "'," ;
-$options .= "'" . $row[2] . "'," ;
+$options .= "'" . $row[2] . " (". $row[5] .")',";
 }
 $options = rtrim($options, ",");
 $values = rtrim($values , ",");
