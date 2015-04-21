@@ -284,6 +284,15 @@ body {
 	color: #166BA5;
 }
 
+    #submissions-table {
+        width: 100%;
+        border: 1px;
+        color: #333333;
+    }
+    #submissions-table th {
+        font-weight: bold;
+    }
+
 </style><script>
 function getData(dataSource,  courseID )
 {
@@ -430,12 +439,33 @@ echo "<option value=\"" . $row[0] . "\">" . $row[0] . "</option>";
 if ($numcourses == 1) {
   echo "<script>getData('assignments.php?courseID=' ,  'courseID'  );</script>";
 }
-
-if ($_GET['error'] !== "" )
-echo "<p>" .$_GET['error'].  " <p>" ;
+#if ($_GET['error'] !== "" )
+#echo "<p>" .$_GET['error'].  " <p>"
 ?>
 <p id="error" > <p>
-</div>
+<?php
 
+$sql="SELECT a.name,DATE_FORMAT(a.duedate, '%m/%d/%Y %H:%i') as duedate,DATE_FORMAT(s.SubmissionDate, '%m/%d/%Y %H:%i') as submissiondate,s.grade, s.comments
+FROM test.assignment a
+join test.submission s on a.AssignmentID = s.AssignmentID and s.StudentId = '$studentID'";
+$result= mysql_query($sql);
+if(mysql_num_rows($result)>0) {
+    echo "<h3>Previous Submissions</h3>";
+    echo "<table id=\"submissions-table\" border=\"1\"><tr><th>Assignment Name</th><th>Due Date</th><th>Submission Date</th><th>Grade</th><th>Comment</th></tr>";
+    // out put data for each row
+    while ($row = mysql_fetch_assoc($result))
+    {
+        echo "<tr><td>" . $row["name"] . "</td><td>" . $row["duedate"] . "</td><td>". $row["submissiondate"]
+            . "</td><td>" . $row["grade"] . "</td><td>" . $row["comments"] . "</td></tr>";
+
+    }
+    echo "</table>";
+}else
+{
+    echo "No submissions yet!";
+}
+
+?>
+</div>
 </body>
 </html>

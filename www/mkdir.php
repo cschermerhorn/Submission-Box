@@ -449,7 +449,10 @@ else
     // Create/update submission record
     $submissionTime = time();
     $mysqltime = date ("Y-m-d H:i:s", $submissionTime);
-    $submissionStatement = "Insert into submission (StudentId, AssignmentID, SubmissionDate) VALUES (\"$student\",$assignmentId,\"$mysqltime\") ON DUPLICATE KEY UPDATE SubmissionDate=\"$mysqltime\";";
+
+    // in case the submission is already submitted, just add  another directory for the new one
+    $submissionStatement = "Insert into submission (StudentId, AssignmentID, SubmissionDate) VALUES (\"$student\",$assignmentId,\"$mysqltime\")
+    ON DUPLICATE KEY UPDATE SubmissionDate=\"$mysqltime\";";
 //    mysqli_stmt_bind_param($submissionStatement, "sis", $student, $assignment, $mysqltime);
 //    if (!mysqli_stmt_execute($submissionStatement)) {
     if (!mysql_query($submissionStatement)) {
@@ -465,7 +468,8 @@ else
 
 $to = "schermerhornc485@strose.edu," . $student . "@strose.edu"; // change it to the receiver email address
 $subject = "SubmissionBox confirmation: " . $course . " " . $assignment . ", for " . $student;
-$body = "SubmissionBox confirmation: " . $assignment . "\" for " . $course . " has been uploaded by " . $student . ".\nThe following file was submitted: " . $filename . $lateMessage;
+$body = "SubmissionBox confirmation: " . $assignment . "\" for " . $course . " has been uploaded by " . $student . ".\n
+The following file was submitted: " . $filename . $lateMessage;
 //$from = $student. "@strose.edu"; // student strose e-mail
 $from = "sb-confirmation@teresco.org";
 $headers = "From:" . $from; // additional parameter to set From, Cc and Bcc

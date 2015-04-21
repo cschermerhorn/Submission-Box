@@ -8,7 +8,8 @@ print "newEntry [Student] StudentID Password\n";
 print "newEntry [Course] CourseID\n";
 print "newEntry [Enrollment] StudentID CourseID\n";
 print "newEntry [Assignment] AssignmentName CourseID DueDate gFlag(0 for non auto grading, 1 otherwise)\n";
+print "newEntry [Submission] StudentID AssignmentID Grade \"Comment for submission, surrounded by quotes\"\n";
 
 print "DESCRIPTION:\n\n";
-print "Adds a new row in table [Student|Course|Enrollment|Assignment]\n";
+print "Adds a new row in table [Student|Course|Enrollment|Assignment|Submission]\n";
 print "It will also create new directories for every new course and assignment\n\n\n";
