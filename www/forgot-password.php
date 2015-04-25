@@ -92,7 +92,7 @@ if (isset($_POST['username'])){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="style.css" />
-<title>CodingCyber - Simple Script to send Forgotten password</title>
+<title>Forgot Password Form</title>
 </head>
 <body>
 
