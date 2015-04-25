@@ -6,6 +6,13 @@ $username = "root";
 $password = "letsgosb3";
 $dbname = "test";
 
+/*
+  Password reset and submission via php/sql was referenced from
+  http://codingcyber.com/send-forgotten-password-by-mail-using-php-and-mysql-35/
+  and http://stackoverflow.com/questions/6101956/generating-a-random-password-in-php
+*/
+
+
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
