@@ -445,17 +445,17 @@ if ($numcourses == 1) {
 <p id="error" > <p>
 <?php
 
-$sql="SELECT a.name,DATE_FORMAT(a.duedate, '%m/%d/%Y %H:%i') as duedate,DATE_FORMAT(s.SubmissionDate, '%m/%d/%Y %H:%i') as submissiondate,s.grade, s.comments
-FROM test.assignment a
-join test.submission s on a.AssignmentID = s.AssignmentID and s.StudentId = '$studentID'";
+$sql="SELECT a.courseid,a.name,DATE_FORMAT(a.duedate, '%m/%d/%Y %H:%i') as duedate,DATE_FORMAT(s.SubmissionDate, '%m/%d/%Y %H:%i') as submissiondate,s.grade, s.comments
+FROM test.Assignment a
+join test.Submission s on a.AssignmentID = s.AssignmentID and s.StudentId = '$studentID'";
 $result= mysql_query($sql);
 if(mysql_num_rows($result)>0) {
     echo "<h3>Previous Submissions</h3>";
-    echo "<table id=\"submissions-table\" border=\"1\"><tr><th>Assignment Name</th><th>Due Date</th><th>Submission Date</th><th>Grade</th><th>Comment</th></tr>";
+    echo "<table id=\"submissions-table\" border=\"1\"><tr><th>Course</th><th>Assignment Name</th><th>Due Date</th><th>Submission Date</th><th>Grade</th><th>Comment</th></tr>";
     // out put data for each row
     while ($row = mysql_fetch_assoc($result))
     {
-        echo "<tr><td>" . $row["name"] . "</td><td>" . $row["duedate"] . "</td><td>". $row["submissiondate"]
+        echo "<tr><td>" . $row["courseid"] . "</td><td>" . $row["name"] . "</td><td>" . $row["duedate"] . "</td><td>". $row["submissiondate"]
             . "</td><td>" . $row["grade"] . "</td><td>" . $row["comments"] . "</td></tr>";
 
     }
