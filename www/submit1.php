@@ -1,22 +1,17 @@
 <?php
-/*
-This script implements the submission form. There are two lists. The first one is  populated dynamically with the student's registered course(s).
-The other one shows the assignments related to the selected course. This means the second list will not be populated until a course selection is made.
-The form is submitted to mkdir.php via post method.
-*/
-session_start();
-if(!isset($_SESSION['username'])){
-  header("location: Authentication.html");
-}
+  session_start();
+  if(!isset($_SESSION['username'])){
+    header("location: Authentication.html");
+  }
 ?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <link href="css/dropzone.css" type="text/css" rel="stylesheet" />
 
-  <script src="dropzone.js">  </script>
-
+  <!-- Define the dropzone javascript file.  Needed to retain drag/drop
+       functionality of uploads.  Removal will break submissions here-->
+  <script src="dropzone.js"></script>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <title>Submission Box</title>
   <style type="text/css">
@@ -302,7 +297,6 @@ if(!isset($_SESSION['username'])){
   <script>
   function getData(dataSource,  courseID )
   {
-
     var XMLHttpRequestObject = false;
     if (window.XMLHttpRequest)
     {
@@ -316,7 +310,6 @@ if(!isset($_SESSION['username'])){
     }
     if (XMLHttpRequestObject)
     {
-
       XMLHttpRequestObject.open("GET", dataSource + document.getElementById(courseID ).value );
       XMLHttpRequestObject.onreadystatechange =
       function()
@@ -324,12 +317,7 @@ if(!isset($_SESSION['username'])){
         if (XMLHttpRequestObject.readyState == 4 &&
           XMLHttpRequestObject.status == 200)
           {
-
-
-
             eval(XMLHttpRequestObject.responseText);
-            //alert( XMLHttpRequestObject.responseText  );
-
           }
         }
         XMLHttpRequestObject.send(null);
@@ -340,7 +328,6 @@ if(!isset($_SESSION['username'])){
     //the SQL statment in assignment.php
     function processData(data, values )
     {
-
       var targetSelect = document.getElementById("targetSelect");
       options_array = data.unique();
       values_array = values.unique();
@@ -372,6 +359,10 @@ if(!isset($_SESSION['username'])){
       return a;
     };
 
+    /*
+      Functionality currently does not work with Dropzone implementation for SB3.
+      Leaving in for future reference, but could probably be removed.
+    */
     function validateForm()
     {
       //To make sure that the form is completely filled
@@ -386,83 +377,83 @@ if(!isset($_SESSION['username'])){
         return false;
       }
     }
-
     </script>
-
   </head>
-
   <body>
-
     <div id="main">
       <?php
-      echo "<h2>" .$_SESSION['username'] . " assignment submission <div style='float:right;font-size:15px;margin-top:20px'><a href='logout.php'>Logout<a></div></h2>" ;
+        echo "<h2>" .$_SESSION['username'] . " assignment submission <div style='float:right;font-size:15px;margin-top:20px'><a href='logout.php'>Logout<a></div></h2>" ;
       ?>
-
-
       <h3>Select the assignment to be submitted</h3>
-      <form action="mkdir1.php"
-      class="dropzone"
-      id="my-awesome-dropzone" method="POST" enctype="multipart/form-data">
-      <!--<form action="mkdir1.php"
-      class="dropzone"
-      name = 'userfile' id="userfile" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">-->
-      <SELECT name="courseName" id="courseID"  onchange="getData('assignments.php?courseID=' ,  'courseID'  )" >
 
+      <!-- Forward to mkdir1.php since this is the dropzone test submit1.php file-->
+      <!-- change this form action if fully implemented in the future-->
+
+      <!--Form functionality was changed to include dropzone.  class and id need to be declared
+          here like it is.  If changing, change in dropzone.js as well.  enctype and method of POST
+          also need to remain.  Although dropzone.js is defaulted to post, data still needs to be
+          double declared here as well for proper submission-->
+      <form action="mkdir1.php" class="dropzone" id="my-awesome-dropzone" method="POST" enctype="multipart/form-data">
+        <select name="courseName" id="courseID"  onchange="getData('assignments.php?courseID=' ,  'courseID'  )" >
         <?php
+          $studentID = $_SESSION['username'] ;
 
-        $studentID = $_SESSION['username'] ;
+          //Establish the database connection
+          $con = mysql_connect("localhost","root","letsgosb3") or die("Failed to connect to database");
+          mysql_select_db("test", $con);
 
-        //Establish the database connection
-        $con = mysql_connect("localhost","root","letsgosb3") or die("Failed to connect to database");
-        mysql_select_db("test", $con);
+          //Select all the courses in which the student has been enrolled
+          $sql_command = "select CourseID from Enrollment where StudentID = '$studentID';";
+          $res = mysql_query($sql_command);
 
-        //Select all the courses in which the student has been enrolled
-        $sql_command = "select CourseID from Enrollment where StudentID = '$studentID';";
-        $res = mysql_query($sql_command);
+          // JDT added 1/12/14 to add "Select a course" only if there's more than one course for this student
+          $numcourses = mysql_num_rows($res);
+          if ($numcourses > 1) {
+            echo '<option value="0">Select a Course</option>';
+          }
 
-        // JDT added 1/12/14 to add "Select a course" only if there's more than one course for this student
-        $numcourses = mysql_num_rows($res);
-        if ($numcourses > 1) {
-          echo '<option value="0">Select a Course</option>';
-        }
-
-        //Dynamically populate the dropdown list with the courses
-        while($row = mysql_fetch_array($res))
-        {
-          echo "<option value=\"" . $row[0] . "\">" . $row[0] . "</option>";
-        }
+          //Dynamically populate the dropdown list with the courses
+          while($row = mysql_fetch_array($res))
+          {
+            echo "<option value=\"" . $row[0] . "\">" . $row[0] . "</option>";
+          }
         ?>
-      </SELECT><br />
-      <br />
+      </select><br />
+      <br/>
       <SELECT id="targetSelect" name="assignmentID">
         <option value="0">Select an Assignment</option>
       </SELECT>
     </br></br>
     <br /><br />
-    <!--<input id="submit-all" class="btnLogin" type="submit" name="submit" value="Submit" />-->
   </form>
 
 
   <!-- edit this so that we can submit the form outside of said form. -->
   <!-- only one here, so use index 0.  Could probably use its ID as well (CS) -->
-
   <input id="submit-all" class="btnLogin" onclick="document.forms[0].submit();"
           type="submit" name="submit" value="Submit" />
 
-<!--<button id="submit-all">Submit all files</button>-->
-
   <?php
-  // JDT added to popular assignments list immediately when only one course
-  if ($numcourses == 1) {
-    echo "<script>getData('assignments.php?courseID=' ,  'courseID'  );</script>";
-  }
+    // JDT added to popular assignments list immediately when only one course
+    if ($numcourses == 1) {
+      echo "<script>getData('assignments.php?courseID=' ,  'courseID'  );</script>";
+    }
 
-  #if ($_GET['error'] !== "" )
-  #echo "<p>" .$_GET['error'].  " <p>" ;
+    #if ($_GET['error'] !== "" )
+    #echo "<p>" .$_GET['error'].  " <p>" ;
   ?>
   <p id="error" > <p>
   <?php
 
+  /*
+    Submission table introduced from submit.php for sb3.
+
+    SB3 addition.  Output a submission table for past submissions.  Pull
+    data from the database and join with submissions that the student has
+    uploaded.
+
+    Will only show most current submission, and not multiple submissions.
+  */
   $sql="SELECT a.name,DATE_FORMAT(a.duedate, '%m/%d/%Y %H:%i') as duedate,DATE_FORMAT(s.SubmissionDate, '%m/%d/%Y %H:%i') as submissiondate,s.grade, s.comments
   FROM test.Assignment a
   join test.Submission s on a.AssignmentID = s.AssignmentID and s.StudentId = '$studentID'";

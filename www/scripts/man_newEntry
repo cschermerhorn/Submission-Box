@@ -7,7 +7,7 @@ print "SYNOPSIS:\n\n";
 print "newEntry [Student] StudentID Password\n";
 print "newEntry [Course] CourseID\n";
 print "newEntry [Enrollment] StudentID CourseID\n";
-print "newEntry [Assignment] AssignmentName CourseID DueDate gFlag(0 for non auto grading, 1 otherwise)\n";
+print "newEntry [Assignment] AssignmentName CourseID DueDate gFlag(0 for non auto grading, 1 otherwise) FileTypes\n";
 print "newEntry [Submission] StudentID AssignmentID Grade \"Comment for submission, surrounded by quotes\"\n";
 
 print "DESCRIPTION:\n\n";

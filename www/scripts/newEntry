@@ -56,7 +56,7 @@ if($prog eq "newEntry"){
     	    $qry .= " (gFlag, Name, CourseID, DueDate, FileTypes) values ('$gflag','$aname', '$crsID', '$ddate', '$fTypes');";
     	    &execQry($qry);  #Subroutine is called to execute the query
 	    $dirname = "/home/sb3/www/sb/courses/$crsID/$aname";
-    	    unless(mkdir $dirname, 0770){   #Creates a new directory at desired path
+    	    unless(mkdir $dirname, 0776){   #Creates a new directory at desired path
     		die "Unable to create $dirname\n";
     	    }
     	    print "Successfully inserted assignment: $aname\n";
@@ -116,7 +116,7 @@ if($prog eq "newEntry"){
             $assignmentId = $ARGV[2];
             $grade = $ARGV[3];
             $comment = $ARGV[4];
-            $qry = "UPDATE submission set Grade = $grade, Comments = '$comment' where StudentId = '$studentId' and AssignmentID = $assignmentId;";
+            $qry = "UPDATE Submission set Grade = $grade, Comments = '$comment' where StudentID = '$studentId' and AssignmentID = $assignmentId;";
             &execQry($qry);  #Subroutine is called to execute the query
             print "Successfully entered grade information for $studentId for assignment $assignmentId\n";
         }

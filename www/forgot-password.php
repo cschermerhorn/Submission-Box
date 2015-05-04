@@ -6,13 +6,6 @@ $username = "root";
 $password = "letsgosb3";
 $dbname = "test";
 
-/*
-  Password reset and submission via php/sql was referenced from
-  http://codingcyber.com/send-forgotten-password-by-mail-using-php-and-mysql-35/
-  and http://stackoverflow.com/questions/6101956/generating-a-random-password-in-php
-*/
-
-
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
@@ -53,22 +46,11 @@ if (isset($_POST['username'])){
         $from = "sb-confirmation@teresco.org";
         $headers = "From:" . $from; // additional parameter to set From, Cc and Bcc
         $rows=mysql_fetch_array($result);
-        //$pass  =  $rows['password'];//FETCHING PASS
-        //echo "your pass is ::".($pass)."";
-        //$to = $rows['email'];
-        //echo "your email is ::".$email;
-        //Details for sending E-mail
-        //$from = "Submission Box 3";
-        //$url = "http://www.sb3.teresco.org/";
-        $body  =  "Password recovery
-        -----------------------------------------------
-        Url : $url;
+        $body  =  "Enter the following password next time you log into SubmissionBox.
         PASSWORD: " . implode($pass);
-        "email Details is : $to;
-        Here is your password  : $pass;
-        Sincerely,
+        "Sincerely,
         SB3";
-        $from = "test@sb3.teresco.org";
+        $from = "sb-password-reset@sb3.teresco.org";
         $subject = "Password recovered";
         $headers1 = "From: $from\n";
         $headers1 .= "Content-type: text/html;charset=iso-8859-1\r\n";
@@ -84,7 +66,8 @@ if (isset($_POST['username'])){
     //If the message is sent successfully, display sucess message otherwise display an error message.
     if($sentmail==1)
     {
-        echo "<span style='color: #ff0000;'> Your Password Has Been Sent To Your Email Address.</span>";
+        //echo "<span style='color: #ff0000;'> Your Password Has Been Sent To Your Email Address.</span>";
+        echo '<script type="text/javascript">alert("Your Password Has Been Sent To Your Email Address.");</script>';
     }
         else
         {
@@ -98,28 +81,28 @@ if (isset($_POST['username'])){
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" type="text/css" href="style.css" />
-<title>Forgot Password Form</title>
+<link rel="stylesheet" type="text/css" href="css/forgot-password.css" />
+<title>Password Reset Form</title>
 </head>
 <body>
 
-
+<div id="header">Forgot Password</div>
 <div class="register-form">
 <?php
 	if(isset($msg) & !empty($msg)){
 		echo $msg;
 	}
  ?>
-<h1>Forgot Password</h1>
-<form class="box login" action="" method="POST">
-
+<form class="box login" action="" method="post">
   <fieldset class="boxBody">
-     <p><label>User Name : </label>
-	   <input id="username" type="text" name="username" placeholder="username" /></p>
-     <input class="btnLogin" type="submit" name="submit" value="Submit" />
+     <label>Username : </label>
+	   <input id="username" type="text" name="username" placeholder="username" />
   </fieldset>
+  <footer>
+    <input class="btnLogin" type="submit" name="submit" value="Submit" />
+    <br><br><a href="/Authentication.html">Submission Box Main Page</a>
+  </footer>
 </form>
 </div>
-
 </body>
 </html>

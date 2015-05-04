@@ -1,11 +1,16 @@
 <?php
 error_reporting(E_ALL^ E_DEPRECATED);
 /*
+File edited for SB3.  This file serves as a landzone for the dropzone testing completed
+via submit1.php.  Currently, this will complain about unknown errors, which is due
+to the actual file not existing here.  File is uploaded using this file prior
+to the page loading, and cannot be retrieved once reached here.  Filename is passed
+via hidden field.
+
 This script is an action value of the submission form in submit.php.
 This script builds the submission path. For example  ./sb/courses/csc501/Assignment1/John
 For this to work correctly,before runing this script the ..... script must be run to create particular course directory,csc501 for example, owned by apache with rewritable  permission
 Note:./sb/courses/ is statically created with rewritable permission
-
 */
 session_start();
 if(!isset($_SESSION['username'])){
@@ -391,7 +396,7 @@ if(!isset($_SESSION['username'])){
     // Now check the filesize, if it is too large then ERROR_AND_DIE and inform the user.
     if(filesize($_FILES['file']['tmp_name']) > $max_filesize)
     error_and_die('The file you attempted to upload is too large.');
-    /**
+    /*
     // Check if we can upload to the specified path, if not ERROR_AND_DIE and inform the user.
     if(!is_writable($upload_path))
     {
@@ -482,8 +487,6 @@ if(!isset($_SESSION['username'])){
     else {
       echo("<p>Message delivery failed...  Please contact your instructor to verify successful submission of your assignment.</p>");
     }
-
-
   }
   else{
     echo 'There was an error during the file upload.  Please try again.'; // It failed :(.
