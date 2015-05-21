@@ -12,9 +12,9 @@ A general timeline of the timeline being used by the Software Engineering class 
 |~~Individual project/group preferences~~ |~~11:59 PM, Wednesday, January 21, 2015~~ |
 |~~Requirements document~~             | ~~11:59 PM, Monday, February 9, 2015~~    |
 |~~Software plan and design document~~ | ~~6:00 PM, Monday, February 23, 2015~~    |
-|Bug Bash for completed software        | 6:00 PM, Monday, April 20, 2015      |
-|Complete project presentations         | Monday, April 27, 2015               |
-|Final submission                       | 6:00 PM, Monday, May 4, 2015         |
+|~~Bug Bash for completed software~~        | ~~6:00 PM, Monday, April 20, 2015~~      |
+|~~Complete project presentations~~         | ~~Monday, April 27, 2015~~               |
+|~~Final submission~~                       | ~~6:00 PM, Monday, May 4, 2015~~         |
 
 Currently, this repository is being used for deadlines April 20th and forward.
 
