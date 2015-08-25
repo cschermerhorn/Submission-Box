@@ -8,8 +8,8 @@
 error_reporting(E_ALL^ E_DEPRECATED);
 $selectedCourse =  $_GET['courseID'];
 //Establish the database connection
-$con = mysql_connect("localhost","root","letsgosb3") or die("Failed to connect to database");
-mysql_select_db("test", $con);
+$con = mysql_connect("localhost","sb3webuser","USERPWD") or die("Failed to connect to database");
+mysql_select_db("SubmissionBox3", $con);
 
 //Select all the homework(s)  according to the selected  course in which the student has been enrolled
 $sql_command = "select  * from Assignment where CourseID = '$selectedCourse';";

@@ -399,8 +399,8 @@
           $studentID = $_SESSION['username'] ;
 
           //Establish the database connection
-          $con = mysql_connect("localhost","root","letsgosb3") or die("Failed to connect to database");
-          mysql_select_db("test", $con);
+          $con = mysql_connect("localhost","sb3webuser","USERPWD") or die("Failed to connect to database");
+          mysql_select_db("SubmissionBox3", $con);
 
           //Select all the courses in which the student has been enrolled
           $sql_command = "select CourseID from Enrollment where StudentID = '$studentID';";

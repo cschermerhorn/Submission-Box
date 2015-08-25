@@ -118,8 +118,8 @@ if(!isset($_SESSION['username'])){
             $studentID = $_SESSION['username'] ;
 
             //Establish the database connection
-            $con = mysql_connect("localhost","root","letsgosb3") or die("Failed to connect to database");
-            mysql_select_db("test", $con);
+            $con = mysql_connect("localhost","sb3webuser","USERPWD") or die("Failed to connect to database");
+            mysql_select_db("SubmissionBox3", $con);
 
             //Select all the courses in which the student has been enrolled
             $sql_command = "select CourseID from Enrollment where StudentID = '$studentID';";
@@ -148,7 +148,7 @@ if(!isset($_SESSION['username'])){
       <input type="submit" class="btnLogin" name="submit" value="Submit" style="width: 61px; height: 21px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
     </form>
     <?php
-      // JDT added to popular assignments list immediately when only one course
+      // JDT added to populate assignments list immediately when only one course
       if ($numcourses == 1) {
         echo "<script>getData('assignments.php?courseID=' ,  'courseID'  );</script>";
       }
@@ -169,16 +169,17 @@ if(!isset($_SESSION['username'])){
 
         //Build sql to pull data from database
         $sql="SELECT a.courseid,a.name,DATE_FORMAT(a.duedate, '%m/%d/%Y %H:%i') as duedate,DATE_FORMAT(s.SubmissionDate, '%m/%d/%Y %H:%i') as submissiondate,s.grade, s.comments
-        FROM test.Assignment a
-        join test.Submission s on a.AssignmentID = s.AssignmentID and s.StudentId = '$studentID'";
+        FROM Assignment a
+        join Submission s on a.AssignmentID = s.AssignmentID and s.StudentId = '$studentID'";
+	echo "<!-- SQL: ".$sql." -->\n";
         $result= mysql_query($sql);
 
         //If there is data to print in the table, format it here
-        if(mysql_num_rows($result)>0)
+        if($result && mysql_num_rows($result)>0)
         {
           echo "<h3>Previous Submissions</h3>";
           echo "<table id=\"submissions-table\" border=\"1\"><tr><th>Course</th><th>Assignment Name</th><th>Due Date</th><th>Submission Date</th><th>Grade</th><th>Comment</th></tr>";
-          // out put data for each row
+          // output data for each row
           while ($row = mysql_fetch_assoc($result))
           {
             echo "<tr><td>" . $row["courseid"] . "</td><td>" . $row["name"] . "</td><td>" . $row["duedate"] . "</td><td>". $row["submissiondate"]

@@ -331,8 +331,8 @@ if(!isset($_SESSION['username'])){
     }
 
     //database connection
-    $con = mysql_connect("localhost","root","letsgosb3") or error_and_die("Failed to connect to database");
-    mysql_select_db("test", $con);
+    $con = mysql_connect("localhost","sb3webuser","USERPWD") or error_and_die("Failed to connect to database");
+    mysql_select_db("SubmissionBox3", $con);
 
     //Name field is the assignment name. It is used for appropriate path building.
     //gFlag is selected to check if the assignment is set to be automatically executed
@@ -474,7 +474,7 @@ if(!isset($_SESSION['username'])){
       $lateMessage = "\nThe assignment was submitted " . ($submissionTimeDelta / 60.0 / 60.0) . " hours late.";
     }
 
-    $to = "schermerhornc485@strose.edu," . $student . "@strose.edu"; // change it to the receiver email address
+    $to = "terescoj@strose.edu," . $student . "@strose.edu"; // change it to the receiver email address
     $subject = "SubmissionBox confirmation: " . $course . " " . $assignment . ", for " . $student;
     $body = "SubmissionBox confirmation: " . $assignment . "\" for " . $course . " has been uploaded by " . $student . ".\n
     The following file was submitted: " . $filename . $lateMessage;

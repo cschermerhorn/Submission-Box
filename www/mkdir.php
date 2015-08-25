@@ -39,9 +39,11 @@ if(!isset($_SESSION['username'])){
       }
 
       //database connection
-      $con = mysql_connect("localhost","root","letsgosb3") or error_and_die("Failed to connect to database");
-      mysql_select_db("test", $con);
+      $con = mysql_connect("localhost","sb3webuser","USERPWD") or error_and_die("Failed to connect to database");
+      mysql_select_db("SubmissionBox3", $con);
 
+      date_default_timezone_set('America/New_York');
+      
       //Name field is the assignment name. It is used for appropriate path building.
       //gFlag is selected to check if the assignment is set to be automatically executed
       $sql_command = "select AssignmentId, Name , gFlag, FileTypes, DueDate from Assignment where AssignmentID = " . $_POST['assignmentID'] . ";";
@@ -65,9 +67,10 @@ if(!isset($_SESSION['username'])){
       if (strlen($student) == 0) error_and_die ("Student name not set properly!  Please try again or contact your instructor.");
       if (strlen($assignment) == 0) error_and_die ("Assignment not set properly!  Please try again or contact your instructor.");
 
-      if (strlen($allowedFileTypesStr) == 0) error_and_die("Allowed file types not set properly.  Please try again or contact your instructor.");
-      $allowedFileTypes = explode(",", $allowedFileTypesStr);
-
+      // JDT - not an error to have no allowed file type restriction
+      if (strlen($allowedFileTypesStr) > 0) {
+            $allowedFileTypes = explode(",", $allowedFileTypesStr);
+      }
       //Configuration - Your Options
 
       //Filesize definition.  Could be changed, but has not been tested
@@ -86,19 +89,21 @@ if(!isset($_SESSION['username'])){
       mkdir( $upload_path, 0777);
 
       $filename = $_FILES['userfile']['name']; // Get the name of the file (including file extension).
-      $idx = strpos($filename, ".", 0);
-      $fileExt = substr($filename, $idx + 1);
-      $isFileTypeAllowed = false;
-      foreach($allowedFileTypes as $allowedFileType) {
-        if ($allowedFileType == $fileExt) {
-          $isFileTypeAllowed = true;
-          break;
+      if (strlen($allowedFileTypesStr) > 0) {
+        $idx = strpos($filename, ".", 0);
+        $fileExt = substr($filename, $idx + 1);
+        $isFileTypeAllowed = false;
+        foreach($allowedFileTypes as $allowedFileType) {
+          if ($allowedFileType == $fileExt) {
+            $isFileTypeAllowed = true;
+            break;
+          }
+        }
+        if (!$isFileTypeAllowed) {
+          error_and_die("Your submission is not the correct file type");
         }
       }
-      if (!$isFileTypeAllowed) {
-        error_and_die("Your submission is not the correct file type");
-      }
-
+      
       // Now check the filesize, if it is too large then ERROR_AND_DIE and inform the user.
       if(filesize($_FILES['userfile']['tmp_name']) > $max_filesize)
       error_and_die('The file you attempted to upload is too large.');
@@ -173,7 +178,7 @@ if(!isset($_SESSION['username'])){
       //echo " / " . $submissionStatement;
       if (!mysql_query($submissionStatement)) {
         //echo mysql_error();
-        error_and_die("There was a problem recording your submission. Please try again or contact your instructor");
+        error_and_die("There was a problem recording your submission. Please try again or contact your instructor with this information: ".$submissionStatement);
       }
 
       //Calculate the submission time late period.  If late, email along late time
@@ -183,7 +188,7 @@ if(!isset($_SESSION['username'])){
         $lateMessage = "\nThe assignment was submitted " . ($submissionTimeDelta / 60.0 / 60.0) . " hours late.";
       }
 
-      $to = "a@strose.edu," . $student . "@strose.edu"; // change it to the receiver email address
+      $to = "terescoj@strose.edu," . $student . "@strose.edu"; // change it to the receiver email address
       $subject = "SubmissionBox confirmation: " . $course . " " . $assignment . ", for " . $student;
       $body = "SubmissionBox confirmation: " . $assignment . "\" for " . $course . " has been uploaded by " . $student . ".\n
       The following file was submitted: " . $filename . $lateMessage;

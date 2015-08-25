@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 
 #Perl Modules
 use DBI;
@@ -17,9 +17,9 @@ sub execQry{
    #Database Variables
     $driver = "mysql";
     $host = "localhost";
-    $database = "test";
-    $usr = "root";
-    $pwd = "letsgosb3";
+    $database = "SubmissionBox3";
+    $usr = "sb3adminuser";
+    $pwd = "ADMINPASSWD";
 
     #Establish Database Connection
     $DBIConnect = DBI->connect("DBI:$driver:$database", $usr, $pwd) or die $DBI::errstr;
@@ -42,7 +42,7 @@ if($prog eq "newEntry"){
     $table = $ARGV[0];
     $qry = "insert into $table";
     if($table eq "Assignment"){
-	if($#ARGV != 4){
+	if (($#ARGV < 4) || ($#ARGV > 6)) {
 	    print "Invalid argument count\n";
 	    exit;
 	}
@@ -51,10 +51,22 @@ if($prog eq "newEntry"){
 	    $aname = $ARGV[1];
 	    $crsID = $ARGV[2];
 	    $ddate = $ARGV[3];
-	    $gflag = $ARGV[4];
-	    $qry .= " (gFlag, Name, CourseID, DueDate) values ('$gflag','$aname', '$crsID', '$ddate');";
+	    if ($#ARGV < 5) {
+		$gFlag = "0";
+	    }
+	    else {
+		$gflag = $ARGV[4];
+	    }
+	    if ($#ARGV < 6) {
+		$fTypes = "";
+	    }
+	    else {
+		$fTypes = $ARGV[5];
+	    }
+	    $qry .= " (gFlag, Name, CourseID, DueDate, FileTypes) values ('$gflag','$aname', '$crsID', '$ddate', '$fTypes');";
+	    print "Query: $qry\n";
 	    &execQry($qry);  #Subroutine is called to execute the query
-	    $dirname = "/home/sb3/www/sb/courses/$crsID/$aname";
+	    $dirname = "/home/www/SubmissionBox3/sb/courses/$crsID/$aname";
 	    unless(mkdir $dirname, 0770){   #Creates a new directory at desired path
 		die "Unable to create $dirname\n";
 	    }
@@ -85,7 +97,7 @@ if($prog eq "newEntry"){
 	    $crsID = $ARGV[1];
 	    $qry .= "$crsID');";
 	    &execQry($qry);  #Subroutine is called to execute the query
-	    $dirname = "/home/sb3/www/sb/courses/$crsID";
+	    $dirname = "/home/www/SubmissionBox3/sb/courses/$crsID";
 	    unless(mkdir $dirname, 0770){   #Creates a new directory at desired path
 		die "Unable to create $dirname\n";
 	    }
@@ -114,7 +126,7 @@ if($prog eq "newEntry"){
             $assignmentId = $ARGV[2];
             $grade = $ARGV[3];
             $comment = $ARGV[4];
-            $qry = "UPDATE submission set Grade = $grade, Comments = '$comment' where StudentId = '$studentId' and AssignmentID = $assignmentId;";
+            $qry = "UPDATE Submission set Grade = $grade, Comments = '$comment' where StudentId = '$studentId' and AssignmentID = $assignmentId;";
             &execQry($qry);  #Subroutine is called to execute the query
             print "Successfully entered grade information for $studentId for assignment $assignmentId\n";
         }
@@ -204,7 +216,7 @@ elsif($prog eq "editEntry"){
 	    $crsID = $ARGV[2];
 	    $ddate = $ARGV[3];
 	    $gflag = $ARGV[4];
-	     $fTypes = $ARGV[5];
+	    $fTypes = $ARGV[5];
 
 	    $qry .= " set gFlag = '$gflag',  CourseID = '$crsID',  DueDate = '$ddate', FileTypes='$fTypes' where CourseID = '$crsID' and Name = '$aname' ;";
 	    &execQry($qry);  #Subroutine is called to execute the query

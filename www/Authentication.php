@@ -1,8 +1,8 @@
 <?php
 $username=$_POST['username'];
 $password=$_POST['password'];
-$conn = mysql_connect("localhost","root","letsgosb3") or die("Failed to connect to database");
-mysql_select_db("test", $conn);
+$conn = mysql_connect("localhost","sb3webuser","USERPWD") or die("Failed to connect to database");
+mysql_select_db("SubmissionBox3", $conn);
 $query = "SELECT  STUDENTID,PASSWORD FROM Student WHERE PASSWORD =md5('$password') and STUDENTID='$username'";
 //$query = "SELECT  STUDENTID,PASSWORD FROM Student WHERE PASSWORD ='$password' and STUDENTID='$username'";
 $QueryResult = mysql_query($query)

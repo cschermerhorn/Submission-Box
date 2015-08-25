@@ -2,9 +2,9 @@
 
 include "connect.php"; //connects to the database
 $servername = "localhost";
-$username = "root";
-$password = "letsgosb3";
-$dbname = "test";
+$username = "sb3webuser";
+$password = "USERPWD";
+$dbname = "SubmissionBox3";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -50,7 +50,7 @@ if (isset($_POST['username'])){
         PASSWORD: " . implode($pass);
         "Sincerely,
         SB3";
-        $from = "sb-password-reset@sb3.teresco.org";
+        $from = "sb-password-reset@teresco.org";
         $subject = "Password recovered";
         $headers1 = "From: $from\n";
         $headers1 .= "Content-type: text/html;charset=iso-8859-1\r\n";
@@ -60,7 +60,7 @@ if (isset($_POST['username'])){
         $sentmail = mail ( $to, $subject, $body, $headers1 );
     } else {
     if ($_POST ['email'] != "") {
-    echo "<span style='color: #ff0000;'> Not found your email in our database</span>";
+    echo "<span style='color: #ff0000;'>Did not locate your email in our database</span>";
         }
         }
     //If the message is sent successfully, display sucess message otherwise display an error message.
@@ -72,7 +72,7 @@ if (isset($_POST['username'])){
         else
         {
         if($_POST['email']!="")
-        echo "<span style='color: #ff0000;'> Cannot send password to your e-mail address.Problem with sending mail...</span>";
+        echo "<span style='color: #ff0000;'> Cannot send password to your e-mail address.  Problem with sending mail...</span>";
     }
 }
 ?>

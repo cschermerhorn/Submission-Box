@@ -1,8 +1,8 @@
-drop table Student;
-drop table Course;
-drop table Enrollment;
-drop table Assignment;
-drop table Submission;
+drop table if exists Submission;
+drop table if exists Assignment;
+drop table if exists Enrollment;
+drop table if exists Student;
+drop table if exists Course;
 
 create table Student(
   StudentID varchar(20) not null,
@@ -25,11 +25,12 @@ create table Assignment(
   Name varchar(30) not null,
   CourseID varchar(20) not null,
   DueDate date not null,
+  FileTypes VARCHAR(512),
   primary key (AssignmentID),
   foreign key (CourseID) references Course (CourseID));
 
 create table Submission(
-  StudentID int not null,
+  StudentID VARCHAR(20) not null,
   AssignmentID int not null,
   SubmissionDate DATETIME not null,
   Grade DECIMAL(5,2),
@@ -37,7 +38,3 @@ create table Submission(
   PRIMARY KEY (StudentID, AssignmentID),
   FOREIGN KEY (StudentID) REFERENCES Student(StudentID),
   FOREIGN KEY (AssignmentID) REFERENCES Assignment(AssignmentID));
-
-#Alter by SB3.  Add strict filetype restrictions to Assignment table
-#exclude the . when adding -> i.e. txt,pdf
-alter table Assignment add FileTypes VARCHAR(512);
