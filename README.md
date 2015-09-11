@@ -1,7 +1,7 @@
-# Submission Box
-Repository designated for the development of Submission Box ver 3.  This project will be considered open source, and has been developed by students previously enrolled in the graduate Softare Engineering course at The College of Saint Rose.
+# Project has been completed.  Code remains as an open source project for future iterations.
 
-## Visit http://sb3.teresco.org for a demo of what currently has been implemented.
+## Submission Box
+Repository designated for the development of Submission Box ver 3.  This project will be considered open source, and has been developed by students previously enrolled in the graduate Softare Engineering course at The College of Saint Rose.
 
 ## Timeline
 A general timeline of the timeline being used by the Software Engineering class is available at Jim Teresco's website at http://courses.teresco.org/cs507_s15/labs/designproj/
