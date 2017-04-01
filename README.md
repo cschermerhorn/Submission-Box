@@ -1,7 +1,7 @@
 # Project has been completed.  Code remains as an open source project for future iterations.
 
 ## Submission Box
-Repository designated for the development of Submission Box ver 3.  This project will be considered open source, and has been developed by students previously enrolled in the graduate Softare Engineering course at The College of Saint Rose.
+This repository was designated for the development of Submission Box, version 3.  As of 2015, this project was considered open source and was developed by students previously enrolled in the graduate Softare Engineering course at The College of Saint Rose.
 
 ## Timeline
 A general timeline of the timeline being used by the Software Engineering class is available at Jim Teresco's website at http://courses.teresco.org/cs507_s15/labs/designproj/
@@ -16,11 +16,7 @@ A general timeline of the timeline being used by the Software Engineering class 
 |~~Complete project presentations~~         | ~~Monday, April 27, 2015~~               |
 |~~Final submission~~                       | ~~6:00 PM, Monday, May 4, 2015~~         |
 
-Currently, this repository is being used for deadlines April 20th and forward.
+~~Currently, this repository is being used for deadlines April 20th and forward.~~
 
 ## Usage
 Usage is currently restricted to those enrolled in one or more of Jim Teresco's courses.  Authentication is required to access any features provided.
-
-## Features
-Current usability will be expanded with new features.  These can be viewed in the [Issue Tracking](https://github.com/cschermerhorn/Submission-Box/issues) portion of this repository. Be sure to filter to the correct milestone and label structure.
-
